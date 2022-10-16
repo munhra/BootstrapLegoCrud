@@ -8,6 +8,7 @@
     <link href="node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   </head>
   <body>
+    
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Lego Part CRUD</a>
@@ -17,26 +18,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="d-flex">
             <button class="btn btn-danger ms-1" type="button" onclick="deleteLegoPart()"><i class="bi bi-dash-circle-fill"></i> Delete</button>
-            <button class="btn btn-success ms-1" type="button" data-bs-toggle="modal" data-bs-target="#addLegoPartModal"><i class="bi bi-plus-circle-fill"></i> Add New Lego Part</button>
+            <button class="btn btn-success ms-1" type="button" onclick="openAddLegoPartModal()"><i class="bi bi-plus-circle-fill"></i> Add New Lego Part</button>
           </div>
         </div>
       </div>
     </nav>
-    <!-- <div class="d-flex justify-content-center mt-10">
-      <div class="spinner-border mt-10" role="status">
-        <span class="visually-hidden  mt-10">Loading...</span>
-      </div>
-    </div> -->
-    <!-- <div class="spinner-border mt-10" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div> -->
-    <!-- <div class="overlay d-flex justify-content-center align-items-center">
-      <div class="">  
-        <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem; z-index: 20;">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-    </div> -->
+
     <div class="container-fluid">
       <table class="table" hidden="true" id="legoPartTable">
         <thead>
@@ -55,14 +42,39 @@
       </table>
     </div>
 
-    <div class="modal fade" id="addLegoPartModal">
+    <!-- Error Dialog -->
+    <div class="modal fade" tabindex="-1" id="errorDialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Add Lego Part</h5>
+            <h5 class="modal-title">Error</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p id="errorMessage">Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create new lego part modal dialog -->
+    <div class="modal fade" id="addLegoPartModal">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Add Lego Part</h3>
+            <div class="spinner-border" role="status" id="addLegoPartSpinner" hidden="true">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </div>
             <form id="legoPartForm">
-              <div class="modal-body">
+              <div class="modal-body" style="height: 40vh; overflow-y: auto;">
+                <div>
+                  <p id="createPartErrorText" style="background-color: red; width:50%; text-align: center;" class="mx-auto" hidden="true">Error !</p>
+                </div>
                 <div>
                   <label for="name" class="form-label">Name</label>
                   <input type="text" class="form-control" id="name" name="name">
@@ -89,7 +101,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" onclick="addLegoPart()">Save changes</button>
               </div>
             </form>
@@ -97,26 +109,63 @@
       </div>
     </div>
 
+    <!-- information toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="informationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="3000">
+        <div class="toast-header">
+          <strong class="me-auto">LegoPart</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div id="infoToastBody" class="toast-body">
+          Hello, world! This is a toast message.
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script>
       const productionGetAllLegoPartsURL = 'https://us-central1-lego-1ee0d.cloudfunctions.net/lego_parts';
+      const productionCreateLegoPartURL = 'https://us-central1-lego-1ee0d.cloudfunctions.net/lego_parts';
 
       fetchLegoParts();
+      const addLegoPartModal = new bootstrap.Modal(document.getElementById('addLegoPartModal'));
 
       function deleteLegoPart() {
         console.log('deleteLegoPart');
       }
 
+      function openAddLegoPartModal() {
+        addLegoPartModal.show();
+      }
+
       async function addLegoPart() {
+        const addLegoPartSpinner = document.getElementById('addLegoPartSpinner');
         const legoPartForm = document.getElementById('legoPartForm');
-        const legoPartFormData = new FormData(legoPartForm); //cannot access before initialization
+        const legoPartFormData = new FormData(legoPartForm);
         const legoPartFormObject = Object.fromEntries(legoPartFormData);
         const legoPartJSONString = JSON.stringify(legoPartFormObject);
-        createLegoPart(legoPartJSONString);
+
+        var createdLegoPart = {};
+        addLegoPartSpinner.hidden = false
+
+        try {
+          createdLegoPart = await createLegoPart(legoPartJSONString);
+          showInfoToast('Part created with success.');
+          addLegoPartModal.hide();
+        } catch (e) {
+          showInfoToast('Error when creating lego part, please try again.');
+        } finally {
+          addLegoPartSpinner.hidden = true
+        }
       }
 
       async function fetchLegoParts() {
-        const legoParts = await getAllLegoParts();
+        var legoParts = {};
+        try {
+          legoParts = await getAllLegoParts();
+        } catch (e) {
+          showErrorDialog('Error when fetching all lego parts, please try again later.')
+        }
         const legoPartTableBody = document.getElementById("legoPartTableBody");
         legoParts.forEach(legoPart => {
           legoPartTableBody.innerHTML = legoPartTableBody.innerHTML + 
@@ -134,21 +183,48 @@
         document.getElementById("legoPartTable").hidden = false;
       }
 
+      function showInfoToast(message) {
+        const informationToastBody = document.getElementById('infoToastBody');
+        informationToastBody.innerText = message;
+        const informationToast = document.getElementById('informationToast');
+        const bootStrapInformationToast = new bootstrap.Toast(informationToast);
+        bootStrapInformationToast.show();
+      }
+
+      function showErrorDialog(errorMessage) {
+        const errorMessageText = document.getElementById('errorMessage');
+        errorMessageText.innerText = errorMessage;
+        const errorModal = new bootstrap.Modal(document.getElementById('errorDialog'));
+        errorModal.show();
+      }
+
       //Service
 
       async function getAllLegoParts() {
-        // error handling ???
         const response = await fetch(productionGetAllLegoPartsURL, {
           mode:"cors"
         });
-        const legoParts = await response.json();
-        return legoParts;
+        if (response.ok) {
+          const legoParts = await response.json();
+          return legoParts;
+        } else {
+          throw new Error('Server Error when getAllLegoParts');
+        }
       }
 
       async function createLegoPart(legoPartJSONString) {
-        // error handling ???
-        console.log(legoPartJSONString);
-
+        const response = await fetch(productionCreateLegoPartURL, {
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          mode:"cors",
+          body:legoPartJSONString
+        });
+        if (response.ok) {
+          const createdLegoPart = await response.json();
+          return createdLegoPart;
+        } else {
+          throw new Error('Server error when createLegoPart');
+        }
       }
 
     </script>
