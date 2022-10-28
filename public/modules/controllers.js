@@ -4,21 +4,20 @@ import { Service } from 'http://localhost:8080/modules/service.js'
 class ViewController {
   addLegoPartModal = new bootstrap.Modal(document.getElementById('addLegoPartModal'))
   deleteLegoPartConfirmationModal = new bootstrap.Modal(document.getElementById('deleteLegoPartConfirmationModal'))
-
+  // TODO create utilities attribute to be used in the class, is there a way to call it lazy ?
+  // TODO error on select all lines
   service = new Service()
 
   legoPartIdToDelete
+  utilities
   legoParts = []
-
-  constructor () {
-    this.addListenerToDeleteDialogButton()
-  }
+  selectedLegoParts = []
 
   async fetchLegoParts () {
     try {
       this.legoParts = await this.service.getAllLegoPartsFromAPI()
-      const utilities = new Utilities(this.legoParts)
-      utilities.sortLegoPartNumbers()
+      this.utilities = new Utilities()
+      this.utilities.sortLegoPartNumbers(this.legoParts)
     } catch (e) {
       this.showErrorDialog('Error when fetching all lego parts, please try again later.')
     }
@@ -29,6 +28,11 @@ class ViewController {
     this.legoParts.forEach(legoPart => {
       legoPartTableBody.innerHTML = legoPartTableBody.innerHTML +
       `<tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_${legoPart.id}" value="" aria-label="...">
+            </div>
+          </td>
           <td>${legoPart.name}</td>
           <td>${legoPart.description}</td>
           <td>${legoPart.part_number}</td>
@@ -43,13 +47,30 @@ class ViewController {
     document.getElementById('legoPartTable').hidden = false
     // check why bootstrap icons are not working in deploy
 
-    self = this
+    const viewController = this
     this.legoParts.forEach(legoPart => {
       const deleteButton = document.getElementById(legoPart.id)
+      const checkButton = document.getElementById('checkbox_' + legoPart.id)
+
       deleteButton.addEventListener('click', function () {
-        console.log('deleteButton ' + deleteButton.id)
-        self.showDeleteDialog(deleteButton.id)
-        removeEventListener('click', deleteButton)
+        viewController.showDeleteDialog(deleteButton.id)
+        removeEventListener('click', deleteButton) // is this line necessary ?
+      })
+
+      checkButton.addEventListener('click', function () {
+        const legoPartId = viewController.utilities.getLegoPartIDFromCheckbox(checkButton.id)
+        console.log('Lego Part ID => ' + legoPartId)
+        if (checkButton.checked) {
+          console.log('Part checked')
+          const selectedLegoPart = viewController.utilities.getLegoPartNameByID(legoPartId, viewController.legoParts)
+          console.log('Push lego part in selected array ' + selectedLegoPart.id)
+          viewController.selectedLegoParts.push(selectedLegoPart)
+          console.log('Part added to selectedLegoParts ' + viewController.selectedLegoParts.length)
+        } else {
+          console.log('Part UNchecked')
+          viewController.utilities.removeSelectedLegoPart(legoPartId, viewController.selectedLegoParts)
+          console.log('selectedLegoParts count -> ' + viewController.selectedLegoParts.length)
+        }
       })
     })
   }
@@ -83,9 +104,7 @@ class ViewController {
     const deleteLegoPartSpinner = document.getElementById('deleteLegoPartSpinner')
     const deleteLegoPartFooterButtons = document.getElementById('deleteLegoPartFooterButtons')
     const deleteLegoPartConfirmationText = document.getElementById('deleteLegoPartConfirmationText')
-    const utilities = new Utilities(this.legoParts)
-
-    const legoPartToDelete = utilities.getLegoPartNameByID(legoPartIdToDelete)
+    const legoPartToDelete = this.utilities.getLegoPartNameByID(legoPartIdToDelete, this.legoParts)
 
     deleteLegoPartSpinner.hidden = false
     deleteLegoPartFooterButtons.hidden = true
@@ -104,6 +123,26 @@ class ViewController {
       deleteLegoPartFooterButtons.hidden = false
       deleteLegoPartConfirmationText.innerText = 'Are you sure to delete this lego part ?'
     }
+  }
+
+  selectAllLegoParts () {
+    this.legoParts.forEach(legoPart => {
+      const legoPartCheckBox = document.getElementById('checkbox_' + legoPart.id)
+      legoPartCheckBox.checked = true
+    })
+    this.selectedLegoParts = this.utilities.cloneLegoParts(this.legoParts)
+  }
+
+  unSelectAllLegoParts () {
+    this.legoParts.forEach(legoPart => {
+      const legoPartCheckBox = document.getElementById('checkbox_' + legoPart.id)
+      legoPartCheckBox.checked = false
+    })
+    this.selectedLegoParts = []
+  }
+
+  async deleteAllSelectedLegoParts () {
+    console.log('Call API to deleteAllSelectedLegoParts')
   }
 
   openAddLegoPartModal () {
@@ -127,19 +166,10 @@ class ViewController {
 
   showDeleteDialog (legoPartIdToDelete) {
     this.legoPartIdToDelete = legoPartIdToDelete
-    const utilities = new Utilities(this.legoParts)
     const deleteLegoPartConfirmationText = document.getElementById('deleteLegoPartConfirmationText')
-    const legoPartToDelete = utilities.getLegoPartNameByID(this.legoPartIdToDelete)
+    const legoPartToDelete = this.utilities.getLegoPartNameByID(this.legoPartIdToDelete, this.legoParts)
     deleteLegoPartConfirmationText.innerText = `Are you sure to delete lego part ${legoPartToDelete.name} ?`
     this.deleteLegoPartConfirmationModal.show()
-  }
-
-  addListenerToDeleteDialogButton () {
-    const deleteLegoPartDialogButton = document.getElementById('deleteLegoPartDialogButton')
-    self = this
-    deleteLegoPartDialogButton.addEventListener('click', async function () {
-      await self.deleteLegoPart(self.legoPartIdToDelete)
-    })
   }
 }
 
