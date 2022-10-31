@@ -4,6 +4,7 @@ import { Service } from 'http://localhost:8080/modules/service.js'
 class ViewController {
   addLegoPartModal = new bootstrap.Modal(document.getElementById('addLegoPartModal'))
   deleteLegoPartConfirmationModal = new bootstrap.Modal(document.getElementById('deleteLegoPartConfirmationModal'))
+  // TODO server needs to implement bulk delete
   // TODO create utilities attribute to be used in the class, is there a way to call it lazy ?
   // TODO error on select all lines
   service = new Service()
