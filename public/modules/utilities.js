@@ -34,6 +34,11 @@ class Utilities {
     })
     return clonedLegoParts
   }
+
+  dummyMethod () {
+    return 1
+  }
 }
 
+//module.exports = Utilities
 export { Utilities }
