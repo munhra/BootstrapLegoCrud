@@ -1,5 +1,5 @@
 
-import { Utilities } from '/Users/vntraal/projects/legoCRUDBootstrap/public/modules/utilities.js'
+import { Utilities } from '../public/modules/utilities.js'
 import assert from 'assert'
 
 describe('Utilities', function () {
