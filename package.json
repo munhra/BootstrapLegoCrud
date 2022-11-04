@@ -1,12 +1,26 @@
 {
   "dependencies": {
-    "bootstrap-icons": "^1.9.1"
+    "@babel/polyfill": "^7.12.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "bootstrap-icons": "^1.9.1",
+    "nyc": "^15.1.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/register": "^7.18.9",
+    "babel-plugin-istanbul": "^6.1.1",
     "eslint": "^8.25.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.3.0",
-    "eslint-plugin-promise": "^6.1.0"
+    "eslint-plugin-promise": "^6.1.0",
+    "mocha": "^10.1.0"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "c8 --reporter=text --all mocha --require @babel/polyfill --require @babel/register"
   }
 }

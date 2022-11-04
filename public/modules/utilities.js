@@ -34,6 +34,10 @@ class Utilities {
     })
     return clonedLegoParts
   }
+
+  dummyFunction () {
+    return -1
+  }
 }
 
 export { Utilities }
