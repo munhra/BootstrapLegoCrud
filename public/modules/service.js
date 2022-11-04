@@ -1,11 +1,9 @@
 // improve the urls to fast switch between test and production
-const productionGetAllLegoPartsURL = 'https://us-central1-lego-1ee0d.cloudfunctions.net/lego_parts'
-const productionCreateLegoPartURL = 'https://us-central1-lego-1ee0d.cloudfunctions.net/lego_parts'
-const productionDeleteLegoPartURL = 'https://us-central1-lego-1ee0d.cloudfunctions.net/lego_parts'
+const productionURL = 'https://us-central1-lego-1ee0d.cloudfunctions.net/lego_parts'
 
 class Service {
   async getAllLegoPartsFromAPI () {
-    const response = await fetch(productionGetAllLegoPartsURL, {
+    const response = await fetch(productionURL, {
       mode: 'cors'
     })
     if (response.ok) {
@@ -17,7 +15,7 @@ class Service {
   }
 
   async createLegoPartFromAPI (legoPartJSONString) {
-    const response = await fetch(productionCreateLegoPartURL, {
+    const response = await fetch(productionURL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       mode: 'cors',
@@ -31,8 +29,23 @@ class Service {
     }
   }
 
+  async updateLegoPartFromAPI (legoPartJSONString, legoPartId) {
+    const response = await fetch(`${productionURL}/${legoPartId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors',
+      body: legoPartJSONString
+    })
+    if (response.ok) {
+      const updatedLegoPart = await response.json()
+      return updatedLegoPart
+    } else {
+      throw new Error('Server error when updateLegoPart')
+    }
+  }
+
   async deleteLegoPartFromAPI (legoPartId) {
-    const response = await fetch(`${productionDeleteLegoPartURL}/${legoPartId}`, {
+    const response = await fetch(`${productionURL}/${legoPartId}`, {
       method: 'DELETE',
       mode: 'cors'
     })

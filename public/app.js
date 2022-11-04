@@ -20,7 +20,12 @@ function openAddLegoPartModal () {
 }
 
 function addLegoPartModalSave () {
-  viewController.addLegoPart()
+  console.log('ViewController state ' + viewController.isUpdating)
+  if (viewController.isUpdating) {
+    viewController.editLegoPart()
+  } else {
+    viewController.addLegoPart()
+  }
 }
 
 function deleteSelectedLegoParts () {

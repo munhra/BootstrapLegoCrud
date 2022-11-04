@@ -11,13 +11,13 @@ class Utilities {
     })
   }
 
-  getLegoPartNameByID (legoPartID, legoParts) {
+  getLegoPartByID (legoPartID, legoParts) {
     return legoParts.find((legoPart) => legoPart.id === legoPartID)
   }
 
-  getLegoPartIDFromCheckbox (checkboxID) {
-    const splittedCheckboxID = checkboxID.split('_')
-    return splittedCheckboxID[1]
+  getLegoPartIDFromComponent (componentID) {
+    const splittedComponentID = componentID.split('_')
+    return splittedComponentID[1]
   }
 
   removeSelectedLegoPart (legoPartID, selectedLegoParts) {
