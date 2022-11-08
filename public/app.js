@@ -1,4 +1,4 @@
-import { ViewController } from 'http://localhost:8080/modules/controllers.js'
+import { ViewController } from './modules/controllers.JS'
 
 const openAddLegoPartModalButton = document.getElementById('openAddLegoPartModal')
 const addLegoPartModalSaveButton = document.getElementById('addLegoPartModalSave')
@@ -6,7 +6,10 @@ const deleteSelectedLegoPartsButton = document.getElementById('deleteSelectedLeg
 const deleteLegoPartDialogButton = document.getElementById('deleteLegoPartDialogButton')
 const selectAllLegoPartsCheckBox = document.getElementById('selectAllLegoPartsCheckBox')
 
-const viewController = new ViewController()
+const viewController = new ViewController(new bootstrap.Modal(document.getElementById('addLegoPartModal')),
+                                          new bootstrap.Modal(document.getElementById('deleteLegoPartConfirmationModal')), 
+                                          new bootstrap.Toast(document.getElementById('informationToast')), 
+                                          new bootstrap.Modal(document.getElementById('errorDialog')))
 viewController.fetchLegoParts()
 
 openAddLegoPartModalButton.addEventListener('click', openAddLegoPartModal)
@@ -20,7 +23,6 @@ function openAddLegoPartModal () {
 }
 
 function addLegoPartModalSave () {
-  console.log('ViewController state ' + viewController.isUpdating)
   if (viewController.isUpdating) {
     viewController.editLegoPart()
   } else {

@@ -25,7 +25,7 @@ class Service {
       const createdLegoPart = await response.json()
       return createdLegoPart
     } else {
-      throw new Error('Server error when createLegoPart')
+      throw new Error('Server Error when createLegoPart')
     }
   }
 
@@ -54,7 +54,7 @@ class Service {
       deletedLegoPartId = response.json()
       return deletedLegoPartId
     } else {
-      throw new Error(`Server error when deleting lego part with id ${deletedLegoPartId.id}`)
+      throw new Error(`Server error when deleting lego part with id ${legoPartId}`)
     }
   }
 }

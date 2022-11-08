@@ -16,6 +16,15 @@ describe('Utilities', function () {
         "id": "ACLtjhBlTdkwFS9GXQMC"
     },
     {
+        "quantity": "1",
+        "image": "aaa",
+        "color": "yellow",
+        "name": "BB New Part recorded",
+        "part_number": "11233",
+        "description": "description",
+        "id": "ACLtjhBlTdkwFS9G6765"
+    },
+    {
         "part_number": "1233",
         "image": "",
         "color": "green",
@@ -34,13 +43,7 @@ describe('Utilities', function () {
         "id": "IKlqUunlyEvO01BGuW28"
     }
   ]
-
-  describe('dummyFunction', function () {
-    it('should return -1 from dummy method', function () {
-      assert.equal(utilities.dummyFunction(), -1)
-    })
-  })
-
+  
   describe('getLegoPartIDFromComponent', function () {
     it('should return id from getLegoPartIDFromComponent method', function () {
       assert.equal(utilities.getLegoPartIDFromComponent('mycomponent_id'),'id')
@@ -63,7 +66,7 @@ describe('Utilities', function () {
   describe('cloneLegoParts', function () {
     it('should clone legoParts', function () {
       const clonedLegoParts = utilities.cloneLegoParts(mockedLegoParts)
-      assert.equal(clonedLegoParts.length, 3)
+      assert.equal(clonedLegoParts.length, 4)
     })
   })
 

@@ -3,14 +3,19 @@
     "@babel/polyfill": "^7.12.1",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
+    "bootstrap": "^5.2.2",
     "bootstrap-icons": "^1.9.1",
+    "bootstrap-modal-backdrop": "^1.0.1",
     "nyc": "^15.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.19.6",
+    "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.19.4",
     "@babel/register": "^7.18.9",
+    "assert": "^2.0.0",
+    "babel-eslint": "^10.1.0",
     "babel-plugin-istanbul": "^6.1.1",
     "c8": "^7.12.0",
     "eslint": "^8.25.0",
@@ -18,10 +23,14 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.3.0",
     "eslint-plugin-promise": "^6.1.0",
-    "mocha": "^10.1.0"
+    "fetch-mock": "^9.11.0",
+    "jsdom": "^20.0.2",
+    "mocha": "^10.1.0",
+    "node-fetch": "^2.6.7"
   },
   "type": "module",
   "scripts": {
-    "test": "c8 --reporter=text --all mocha --require @babel/polyfill --require @babel/register"
+    "test": "c8 --reporter=text --all mocha --require @babel/polyfill --require @babel/register",
+    "lint": "eslint ./public/modules/*.js"
   }
 }

@@ -1,27 +1,33 @@
-import { Utilities } from 'http://localhost:8080/modules/utilities.js'
-import { Service } from 'http://localhost:8080/modules/service.js'
+import { Utilities } from '../modules/utilities.js'
+import { Service } from '../modules/service.js'
 
 class ViewController {
-  addLegoPartModal = new bootstrap.Modal(document.getElementById('addLegoPartModal'))
-  deleteLegoPartConfirmationModal = new bootstrap.Modal(document.getElementById('deleteLegoPartConfirmationModal'))
-
+  // TODO Clean npm not used dependencies
+  // TODO lint is broken needs to fix maybe module in package.json did the error
   // TODO check add/edit method and variable names
   // TODO validate if the partnumber and part name already exists
   // TODO create utilities attribute to be used in the class, is there a way to call it lazy ?
 
   service = new Service()
+  utilities = new Utilities()
 
   legoPartIdToDelete
   legoPartIdToEdit
-  utilities
+
   isUpdating = false // maybe it would be nice to create a enum to inform the viewcontroller state
   legoParts = []
   selectedLegoParts = []
 
+  constructor (addLegoPartModal, deleteLegoPartConfirmationModal, bootStrapInformationToast, errorModal) {
+    this.addLegoPartModal = addLegoPartModal
+    this.deleteLegoPartConfirmationModal = deleteLegoPartConfirmationModal
+    this.bootStrapInformationToast = bootStrapInformationToast
+    this.errorModal = errorModal
+  }
+
   async fetchLegoParts () {
     try {
       this.legoParts = await this.service.getAllLegoPartsFromAPI()
-      this.utilities = new Utilities()
       this.utilities.sortLegoPartNumbers(this.legoParts)
     } catch (e) {
       this.showErrorDialog('Error when fetching all lego parts, please try again later.')
@@ -79,7 +85,6 @@ class ViewController {
         quantityField.value = selectedLegoPart.quantity
         colorField.value = selectedLegoPart.color
         imageField.value = selectedLegoPart.image
-
         viewController.addLegoPartModal.show()
       })
 
@@ -127,7 +132,7 @@ class ViewController {
     } finally {
       legoPartForm.reset()
       addLegoPartSpinner.hidden = true
-      addLegoPartModalFooter.hidden = false
+      this.addLegoPartModalFooter.hidden = false
     }
   }
 
@@ -210,16 +215,13 @@ class ViewController {
   showInfoToast (message) {
     const informationToastBody = document.getElementById('infoToastBody')
     informationToastBody.innerText = message
-    const informationToast = document.getElementById('informationToast')
-    const bootStrapInformationToast = new bootstrap.Toast(informationToast)
-    bootStrapInformationToast.show()
+    this.bootStrapInformationToast.show()
   }
 
   showErrorDialog (errorMessage) {
     const errorMessageText = document.getElementById('errorMessage')
     errorMessageText.innerText = errorMessage
-    const errorModal = new bootstrap.Modal(document.getElementById('errorDialog'))
-    errorModal.show()
+    this.errorModal.show()
   }
 
   showDeleteDialog (legoPartIdToDelete) {
@@ -228,6 +230,10 @@ class ViewController {
     const legoPartToDelete = this.utilities.getLegoPartByID(this.legoPartIdToDelete, this.legoParts)
     deleteLegoPartConfirmationText.innerText = `Are you sure to delete lego part ${legoPartToDelete.name} ?`
     this.deleteLegoPartConfirmationModal.show()
+  }
+
+  dummyMethod () {
+    return 1
   }
 }
 
