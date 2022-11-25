@@ -7,46 +7,46 @@ describe('Utilities', function () {
 
   const mockedLegoParts = [
     {
-        "quantity": "1",
-        "image": "aaa",
-        "color": "yellow",
-        "name": "BB New Part recorded",
-        "part_number": "11233",
-        "description": "description",
-        "id": "ACLtjhBlTdkwFS9GXQMC"
+      quantity: 1,
+      image: 'aaa',
+      color: 'yellow',
+      name: 'BB New Part recorded',
+      part_number: '11233',
+      description: 'description',
+      id: 'ACLtjhBlTdkwFS9GXQMC'
     },
     {
-        "quantity": "1",
-        "image": "aaa",
-        "color": "yellow",
-        "name": "BB New Part recorded",
-        "part_number": "11233",
-        "description": "description",
-        "id": "ACLtjhBlTdkwFS9G6765"
+      quantity: 1,
+      image: 'aaa',
+      color: 'yellow',
+      name: 'BB New Part recorded',
+      part_number: '11233',
+      description: 'description',
+      id: 'ACLtjhBlTdkwFS9G6765'
     },
     {
-        "part_number": "1233",
-        "image": "",
-        "color": "green",
-        "quantity": "1",
-        "description": "description xxx",
-        "name": "Part #1",
-        "id": "HLCkQtyWrUh1HIRoaxjR"
+      part_number: '1233',
+      image: '',
+      color: 'green',
+      quantity: 1,
+      description: 'description xxx',
+      name: 'Part #1',
+      id: 'HLCkQtyWrUh1HIRoaxjR'
     },
     {
-        "image": "part.png",
-        "name": "AA New Lego Part",
-        "quantity": "111",
-        "color": "blue",
-        "part_number": "232323",
-        "description": "a good description",
-        "id": "IKlqUunlyEvO01BGuW28"
+      image: 'part.png',
+      name: 'AA New Lego Part',
+      quantity: '111',
+      color: 'blue',
+      part_number: '232323',
+      description: 'a good description',
+      id: 'IKlqUunlyEvO01BGuW28'
     }
   ]
-  
+
   describe('getLegoPartIDFromComponent', function () {
     it('should return id from getLegoPartIDFromComponent method', function () {
-      assert.equal(utilities.getLegoPartIDFromComponent('mycomponent_id'),'id')
+      assert.equal(utilities.getLegoPartIDFromComponent('mycomponent_id'), 'id')
     })
   })
 
@@ -74,22 +74,22 @@ describe('Utilities', function () {
     const removableLegoParts =
       [
         {
-          "part_number": "23232",
-          "quantity": "22",
-          "image": "sss.jpg",
-          "name": "New part",
-          "color": "blue",
-          "description": "blah",
-          "id": "VB8peG4ssxBwGAWOGJ5o"
+          part_number: '23232',
+          quantity: 22,
+          image: 'sss.jpg',
+          name: 'New part',
+          color: 'blue',
+          description: 'blah',
+          id: 'VB8peG4ssxBwGAWOGJ5o'
         },
         {
-          "part_number": "123121",
-          "quantity": "22",
-          "name": "Blahhh part 9999",
-          "description": "great description",
-          "image": "aaa",
-          "color": "blue",
-          "id": "fX9wmJRpukj37oFrBZvq"
+          part_number: '123121',
+          quantity: 22,
+          name: 'Blahhh part 9999',
+          description: 'great description',
+          image: 'aaa',
+          color: 'blue',
+          id: 'fX9wmJRpukj37oFrBZvq'
         }
       ]
 

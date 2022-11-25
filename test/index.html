@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lego CRUD with bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Lego Part CRUD</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="d-flex">
+            <button class="btn btn-danger ms-1" type="button" id="deleteSelectedLegoParts"><i class="bi bi-dash-circle-fill"></i> Delete</button>
+            <button class="btn btn-success ms-1" type="button" id="openAddLegoPartModal"><i class="bi bi-plus-circle-fill"></i> Add New Lego Part</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <table class="table table-striped table-hover" hidden="true" id="legoPartTable">
+        <thead>
+          <tr>
+            <th>
+              <div>
+                <input class="form-check-input" type="checkbox" id="selectAllLegoPartsCheckBox" value="" aria-label="...">
+              </div>
+            </th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Part Number</th>
+            <th>Quantity</th>
+            <th>Color</th>
+            <th>Image</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="legoPartTableBody"></tbody>
+        <tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_YEn54wfXvb9KO1KZJyKi" value="" aria-label="...">
+            </div>
+          </td>
+          <td>My New Lego Part</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#YEn54wfXvb9KO1KZJyKi" id="edit_YEn54wfXvb9KO1KZJyKi" class="link-success">Edit</a>
+              <a href="#YEn54wfXvb9KO1KZJyKi" id="delete_YEn54wfXvb9KO1KZJyKi" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_VB8peG4ssxBwGAWOGJ5o" value="" aria-label="...">
+            </div>
+          </td>
+          <td>New part</td>
+          <td>blah</td>
+          <td>23232</td>
+          <td>22</td>
+          <td>blue</td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#VB8peG4ssxBwGAWOGJ5o" id="edit_VB8peG4ssxBwGAWOGJ5o" class="link-success">Edit</a>
+              <a href="#VB8peG4ssxBwGAWOGJ5o" id="delete_VB8peG4ssxBwGAWOGJ5o" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_HLCkQtyWrUh1HIRoaxjR" value="" aria-label="...">
+            </div>
+          </td>
+          <td>Part #1</td>
+          <td>description xxx</td>
+          <td>1233</td>
+          <td>1</td>
+          <td>green</td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#HLCkQtyWrUh1HIRoaxjR" id="edit_HLCkQtyWrUh1HIRoaxjR" class="link-success">Edit</a>
+              <a href="#HLCkQtyWrUh1HIRoaxjR" id="delete_HLCkQtyWrUh1HIRoaxjR" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_tsRZXfEMUhg5NYyFXqDc" value="" aria-label="...">
+            </div>
+          </td>
+          <td>Part 7717</td>
+          <td>Description 1</td>
+          <td>112312</td>
+          <td>1</td>
+          <td>blue</td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#tsRZXfEMUhg5NYyFXqDc" id="edit_tsRZXfEMUhg5NYyFXqDc" class="link-success">Edit</a>
+              <a href="#tsRZXfEMUhg5NYyFXqDc" id="delete_tsRZXfEMUhg5NYyFXqDc" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_KXMon0p50kaQumHomn5B" value="" aria-label="...">
+            </div>
+          </td>
+          <td>Technic Changeover Plate</td>
+          <td>Very nice part to be used anywere</td>
+          <td>6631</td>
+          <td>9</td>
+          <td>Black</td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#KXMon0p50kaQumHomn5B" id="edit_KXMon0p50kaQumHomn5B" class="link-success">Edit</a>
+              <a href="#KXMon0p50kaQumHomn5B" id="delete_KXMon0p50kaQumHomn5B" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_54x8P9N1ZSRDy1jT42du" value="" aria-label="...">
+            </div>
+          </td>
+          <td>aaaaa</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#54x8P9N1ZSRDy1jT42du" id="edit_54x8P9N1ZSRDy1jT42du" class="link-success">Edit</a>
+              <a href="#54x8P9N1ZSRDy1jT42du" id="delete_54x8P9N1ZSRDy1jT42du" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_hVohz4WqGIxVgA28jDto" value="" aria-label="...">
+            </div>
+          </td>
+          <td>blaaaaa changed !!!!!</td>
+          <td>undefined</td>
+          <td>1231321</td>
+          <td>112</td>
+          <td>red</td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#hVohz4WqGIxVgA28jDto" id="edit_hVohz4WqGIxVgA28jDto" class="link-success">Edit</a>
+              <a href="#hVohz4WqGIxVgA28jDto" id="delete_hVohz4WqGIxVgA28jDto" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_6fSUzBwKjr4kkNdFazRs" value="" aria-label="...">
+            </div>
+          </td>
+          <td>blahh</td>
+          <td>aaaa</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#6fSUzBwKjr4kkNdFazRs" id="edit_6fSUzBwKjr4kkNdFazRs" class="link-success">Edit</a>
+              <a href="#6fSUzBwKjr4kkNdFazRs" id="delete_6fSUzBwKjr4kkNdFazRs" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_C8X2lrsVQWBy40JeQDZh" value="" aria-label="...">
+            </div>
+          </td>
+          <td>blahhh xxxx 232221</td>
+          <td>sadasdsa</td>
+          <td>1222</td>
+          <td>111</td>
+          <td>aaaa</td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#C8X2lrsVQWBy40JeQDZh" id="edit_C8X2lrsVQWBy40JeQDZh" class="link-success">Edit</a>
+              <a href="#C8X2lrsVQWBy40JeQDZh" id="delete_C8X2lrsVQWBy40JeQDZh" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_JO8mpNbJcebma56R8UqE" value="" aria-label="...">
+            </div>
+          </td>
+          <td>blahhhh viewcontroller with constructor</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#JO8mpNbJcebma56R8UqE" id="edit_JO8mpNbJcebma56R8UqE" class="link-success">Edit</a>
+              <a href="#JO8mpNbJcebma56R8UqE" id="delete_JO8mpNbJcebma56R8UqE" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_5eM8lAvuqqTydt4jHJUV" value="" aria-label="...">
+            </div>
+          </td>
+          <td>blahhhhh 1234</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#5eM8lAvuqqTydt4jHJUV" id="edit_5eM8lAvuqqTydt4jHJUV" class="link-success">Edit</a>
+              <a href="#5eM8lAvuqqTydt4jHJUV" id="delete_5eM8lAvuqqTydt4jHJUV" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_O83yeGkD3YgsbplSPTby" value="" aria-label="...">
+            </div>
+          </td>
+          <td>new lego part</td>
+          <td>adasdsa</td>
+          <td>121</td>
+          <td>111</td>
+          <td>aaa</td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#O83yeGkD3YgsbplSPTby" id="edit_O83yeGkD3YgsbplSPTby" class="link-success">Edit</a>
+              <a href="#O83yeGkD3YgsbplSPTby" id="delete_O83yeGkD3YgsbplSPTby" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_OTTApQWcZvXKxXOtuWzu" value="" aria-label="...">
+            </div>
+          </td>
+          <td>new lego part added</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#OTTApQWcZvXKxXOtuWzu" id="edit_OTTApQWcZvXKxXOtuWzu" class="link-success">Edit</a>
+              <a href="#OTTApQWcZvXKxXOtuWzu" id="delete_OTTApQWcZvXKxXOtuWzu" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_KL5iCnNjqL8D10ZQnewS" value="" aria-label="...">
+            </div>
+          </td>
+          <td>sdsasdad</td>
+          <td>adsasaa</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#KL5iCnNjqL8D10ZQnewS" id="edit_KL5iCnNjqL8D10ZQnewS" class="link-success">Edit</a>
+              <a href="#KL5iCnNjqL8D10ZQnewS" id="delete_KL5iCnNjqL8D10ZQnewS" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_S3VF5RASorFuwJcCOL2t" value="" aria-label="...">
+            </div>
+          </td>
+          <td>xxxxa aaaa</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#S3VF5RASorFuwJcCOL2t" id="edit_S3VF5RASorFuwJcCOL2t" class="link-success">Edit</a>
+              <a href="#S3VF5RASorFuwJcCOL2t" id="delete_S3VF5RASorFuwJcCOL2t" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr><tr>
+          <td>
+            <div>
+              <input class="form-check-input" type="checkbox" id="checkbox_gjSFLnnbgDVmWGpi4d4S" value="" aria-label="...">
+            </div>
+          </td>
+          <td>zzzzz</td>
+          <td>aaaa</td>
+          <td>123232</td>
+          <td>111</td>
+          <td>red</td>
+          <td><i class="bi bi-image"></i></td>
+          <td><a href="#gjSFLnnbgDVmWGpi4d4S" id="edit_gjSFLnnbgDVmWGpi4d4S" class="link-success">Edit</a>
+              <a href="#gjSFLnnbgDVmWGpi4d4S" id="delete_gjSFLnnbgDVmWGpi4d4S" class="link-danger">Delete</a>
+          </td><td>
+        </td></tr>
+      </table>
+    </div>
+
+    <!-- Error Dialog -->
+    <div class="modal fade" tabindex="-1" id="errorDialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Error</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p id="errorMessage">Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create/Edit new lego part modal dialog -->
+    <div class="modal fade" id="addLegoPartModal">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Add Lego Part</h3>
+            <div class="spinner-border" role="status" id="addLegoPartSpinner" hidden="true">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+            <form id="legoPartForm">
+              <div class="modal-body" style="height: 40vh; overflow-y: auto;">
+                <div>
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="name" name="name" value="placeholder">
+                </div>
+                <div>
+                  <label for="description" class="form-label">Description</label>
+                  <input type="text" class="form-control" id="description" name="description" value="placeholder">
+                </div>
+                <div>
+                  <label for="part_number" class="form-label">Part Number</label>
+                  <input type="text" class="form-control" id="part_number" name="part_number" value="placeholder">
+                </div>
+                <div>
+                  <label for="quantity" class="form-label">Quantity</label>
+                  <input type="text" class="form-control" id="quantity" name="quantity" value="placeholder">
+                </div>
+                <div>
+                  <label for="color" class="form-label">Color</label>
+                  <input type="text" class="form-control" id="color" name="color" value="placeholder">
+                </div>
+                <div>
+                  <label for="image" class="form-label">Image</label>
+                  <input type="text" class="form-control" id="image" name="image" value="placeholder">
+                </div>
+              </div>
+              <div class="modal-footer" id="addLegoPartModalFooter">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="addLegoPartModalSave">Save changes</button>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete lego part confirmation modal dialog -->
+    <div class="modal" tabindex="-1" id="deleteLegoPartConfirmationModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Delete lego part</h3>
+            <div class="spinner-border" role="status" id="deleteLegoPartSpinner" hidden="true">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <div class="modal-body">
+            <p id="deleteLegoPartConfirmationText">Are you sure to delete this lego part ?</p>
+          </div>
+          <div class="modal-footer">
+            <div id="deleteLegoPartFooterButtons">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-danger" id="deleteLegoPartDialogButton">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- information toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="informationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="3000">
+        <div class="toast-header">
+          <strong class="me-auto">LegoPart</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div id="infoToastBody" class="toast-body">
+          Hello, world! This is a toast message.
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <!-- <script type="module" src="app.js"></script> -->
+
+  </body>
+</html>

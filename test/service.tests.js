@@ -8,7 +8,7 @@ describe('Service', function () {
 
   describe('getAllLegoPartsFromAPI', function () {
     it('should return all parts from the API', async function () {
-      const responseBody = 
+      const responseBody =
       `[
         {
             "quantity": "1",
@@ -38,15 +38,15 @@ describe('Service', function () {
       fetchMock.mock(service.productionURL, 404)
       try {
         await service.getAllLegoPartsFromAPI()
-      } catch(error) {
+      } catch (error) {
         assert.equal(error.message, 'Server Error when getAllLegoParts')
       }
       fetchMock.restore()
     })
   })
-  
+
   describe('createLegoPartFromAPI', function () {
-    const newLegoPart = 
+    const newLegoPart =
       `{
         "name": "Technic Changeover Plate",
         "description": "Very nice part to be used anywere",
@@ -56,7 +56,7 @@ describe('Service', function () {
         "quantity": 9
       }`
     it('should create a new part in the API', async function () {
-      const newCreatedLegoPart = 
+      const newCreatedLegoPart =
       `{
         "name": "Technic Changeover Plate",
         "description": "Very nice part to be used anywere",
@@ -76,7 +76,7 @@ describe('Service', function () {
       fetchMock.mock(service.productionURL, 404)
       try {
         await service.createLegoPartFromAPI(newLegoPart)
-      } catch(error) {
+      } catch (error) {
         assert.equal(error.message, 'Server Error when createLegoPart')
       }
       fetchMock.restore()
@@ -84,7 +84,7 @@ describe('Service', function () {
   })
 
   describe('updateLegoPartFromAPI', function () {
-    const updatedLegoPart = 
+    const updatedLegoPart =
       `{
         "name": "Technic Changeover Plate UPDATED",
         "description": "Very nice part to be used anywere",
@@ -93,7 +93,8 @@ describe('Service', function () {
         "image": "link to image",
         "quantity": 20
       }`
-      const newUpdatedLegoPart = 
+
+    const newUpdatedLegoPart =
       `{
         "name": "Technic Changeover Plate UPDATED",
         "description": "Very nice part to be used anywere",
@@ -115,13 +116,13 @@ describe('Service', function () {
       fetchMock.mock(service.productionURL, 404)
       try {
         await service.updateLegoPartFromAPI(updatedLegoPart, '12TPDW9RGaAAAm0AklIh')
-      } catch(error) {
+      } catch (error) {
         assert.equal(error.message, 'Server error when updateLegoPart')
       }
       fetchMock.restore()
     })
   })
-  
+
   describe('deleteLegoPartFromAPI', function () {
     it('should delete the lego part in the API', async function () {
       const deletedLegoPartResponse = '{"id": "ACLtjhBlTdkwFS9GXQMC"}'
@@ -135,8 +136,8 @@ describe('Service', function () {
       fetchMock.mock(service.productionURL, 404)
       try {
         await service.deleteLegoPartFromAPI('ACLtjhBlTdkwFS9GXQMC')
-      } catch(error) {
-        assert.equal(error.message, `Server error when deleting lego part with id ACLtjhBlTdkwFS9GXQMC`)
+      } catch (error) {
+        assert.equal(error.message, 'Server error when deleting lego part with id ACLtjhBlTdkwFS9GXQMC')
       }
       fetchMock.restore()
     })

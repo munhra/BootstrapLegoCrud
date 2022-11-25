@@ -2,10 +2,11 @@ import { Utilities } from '../modules/utilities.js'
 import { Service } from '../modules/service.js'
 
 class ViewController {
-  // TODO Clean npm not used dependencies
-  // TODO lint is broken needs to fix maybe module in package.json did the error
-  // TODO check add/edit method and variable names
-  // TODO validate if the partnumber and part name already exists
+  // TODO adjust the UI when no lego parts exists on the system.
+  // TODO Clean npm not used dependencies.
+  // TODO lint is broken needs to fix maybe module in package.json did the error.
+  // TODO check add/edit method and variable names.
+  // TODO validate if the partnumber and part name already exists.
   // TODO create utilities attribute to be used in the class, is there a way to call it lazy ?
 
   service = new Service()
@@ -35,7 +36,6 @@ class ViewController {
 
     const legoPartTableBody = document.getElementById('legoPartTableBody')
     legoPartTableBody.innerHTML = ''
-    console.log(this.legoParts)
     this.legoParts.forEach(legoPart => {
       legoPartTableBody.innerHTML = legoPartTableBody.innerHTML +
       `<tr>
@@ -63,7 +63,6 @@ class ViewController {
       const editButton = document.getElementById('edit_' + legoPart.id)
       const deleteButton = document.getElementById('delete_' + legoPart.id)
       const checkButton = document.getElementById('checkbox_' + legoPart.id)
-
       const nameField = document.getElementById('name')
       const descriptionField = document.getElementById('description')
       const partNumberField = document.getElementById('part_number')
@@ -80,7 +79,7 @@ class ViewController {
         viewController.legoPartIdToEdit = selectedLegoPart.id
 
         nameField.value = selectedLegoPart.name
-        descriptionField.value = selectedLegoPart.value
+        descriptionField.value = selectedLegoPart.description
         partNumberField.value = selectedLegoPart.part_number
         quantityField.value = selectedLegoPart.quantity
         colorField.value = selectedLegoPart.color
@@ -91,10 +90,9 @@ class ViewController {
       // delete
       deleteButton.addEventListener('click', function () {
         viewController.isUpdating = false
-
         const legoPartId = viewController.utilities.getLegoPartIDFromComponent(deleteButton.id)
         viewController.showDeleteDialog(legoPartId)
-        removeEventListener('click', deleteButton) // is this line necessary ?
+        this.removeEventListener('click', deleteButton) // is this line necessary ?
       })
 
       // select
@@ -132,7 +130,7 @@ class ViewController {
     } finally {
       legoPartForm.reset()
       addLegoPartSpinner.hidden = true
-      this.addLegoPartModalFooter.hidden = false
+      addLegoPartModalFooter.hidden = false
     }
   }
 
