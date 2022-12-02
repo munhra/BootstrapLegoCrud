@@ -57,6 +57,19 @@ class Service {
       throw new Error(`Server error when deleting lego part with id ${legoPartId}`)
     }
   }
+
+  async deleteLegoPartsFromAPI (legoParts) {
+    const legoPartsJSONString = JSON.stringify(legoParts)
+    const response = await fetch(productionURL, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors',
+      body: legoPartsJSONString
+    })
+    if (!response.ok) {
+      throw new Error('Server error when deleting lego parts.')
+    }
+  }
 }
 
 export { Service }

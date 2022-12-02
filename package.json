@@ -30,7 +30,7 @@
   },
   "type": "module",
   "scripts": {
-    "test": "c8 --reporter=text --all mocha --require @babel/polyfill --require @babel/register",
+    "test": "c8 --reporter=html --all mocha --require @babel/polyfill --require @babel/register",
     "lint": "eslint ./public/modules/*.js"
   }
 }

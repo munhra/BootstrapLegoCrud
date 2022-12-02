@@ -31,16 +31,18 @@ function addLegoPartModalSave () {
 }
 
 function deleteSelectedLegoParts () {
-  console.log('TODO deleteSelectedLegoParts')
-  viewController.deleteAllSelectedLegoParts()
+  viewController.showDeleteAllSelectedLegoPartsDialog()
 }
 
 function deleteLegoPartDialog () {
-  viewController.deleteLegoPart(viewController.legoPartIdToDelete)
+  if (viewController.isBatchDeleting) {
+    viewController.deleteAllSelectedLegoParts()
+  } else {
+    viewController.deleteLegoPart(viewController.legoPartIdToDelete)
+  }
 }
 
 function selectAllLegoParts () {
-  console.log('Select All Lego Parts')
   if (selectAllLegoPartsCheckBox.checked) {
     viewController.selectAllLegoParts()
   } else {

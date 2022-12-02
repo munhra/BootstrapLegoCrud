@@ -2,6 +2,7 @@ import { Utilities } from '../modules/utilities.js'
 import { Service } from '../modules/service.js'
 
 class ViewController {
+  // TODO create a test database.
   // TODO adjust the UI when no lego parts exists on the system.
   // TODO Clean npm not used dependencies.
   // TODO lint is broken needs to fix maybe module in package.json did the error.
@@ -16,6 +17,7 @@ class ViewController {
   legoPartIdToEdit
 
   isUpdating = false // maybe it would be nice to create a enum to inform the viewcontroller state
+  isBatchDeleting = false
   legoParts = []
   selectedLegoParts = []
 
@@ -89,6 +91,7 @@ class ViewController {
 
       // delete
       deleteButton.addEventListener('click', function () {
+        viewController.isBatchDeleting = false
         viewController.isUpdating = false
         const legoPartId = viewController.utilities.getLegoPartIDFromComponent(deleteButton.id)
         viewController.showDeleteDialog(legoPartId)
@@ -104,8 +107,18 @@ class ViewController {
         } else {
           viewController.utilities.removeSelectedLegoPart(legoPartId, viewController.selectedLegoParts)
         }
+        viewController.controlSelectedDeleteButtonState()
       })
     })
+  }
+
+  controlSelectedDeleteButtonState () {
+    const deleteSelectedLegoPartsButton = document.getElementById('deleteSelectedLegoParts')
+    if (this.selectedLegoParts.length === 0) {
+      deleteSelectedLegoPartsButton.disabled = true
+    } else {
+      deleteSelectedLegoPartsButton.disabled = false
+    }
   }
 
   async editLegoPart () {
@@ -185,12 +198,41 @@ class ViewController {
     }
   }
 
+  async deleteAllSelectedLegoParts () {
+    const deleteLegoPartSpinner = document.getElementById('deleteLegoPartSpinner')
+    const deleteLegoPartFooterButtons = document.getElementById('deleteLegoPartFooterButtons')
+
+    deleteLegoPartSpinner.hidden = false
+    deleteLegoPartFooterButtons.hidden = true
+
+    try {
+      const selectedLegoPartIDs = {}
+      selectedLegoPartIDs.ids = this.selectedLegoParts.map(legoPart => legoPart.id)
+      await this.service.deleteLegoPartsFromAPI(selectedLegoPartIDs)
+      this.showInfoToast('Lego parts deleted with success.')
+      await this.fetchLegoParts()
+      this.deleteLegoPartConfirmationModal.hide()
+    } catch (e) {
+      this.deleteLegoPartConfirmationModal.hide()
+      this.showErrorDialog('Error when deleting lego parts, try again later.')
+    } finally {
+      deleteLegoPartSpinner.hidden = true
+      deleteLegoPartFooterButtons.hidden = false
+    }
+  }
+
+  showDeleteAllSelectedLegoPartsDialog () {
+    this.isBatchDeleting = true
+    this.showDeleteLegoPartsDialog()
+  }
+
   selectAllLegoParts () {
     this.legoParts.forEach(legoPart => {
       const legoPartCheckBox = document.getElementById('checkbox_' + legoPart.id)
       legoPartCheckBox.checked = true
     })
     this.selectedLegoParts = this.utilities.cloneLegoParts(this.legoParts)
+    this.controlSelectedDeleteButtonState()
   }
 
   unSelectAllLegoParts () {
@@ -199,10 +241,7 @@ class ViewController {
       legoPartCheckBox.checked = false
     })
     this.selectedLegoParts = []
-  }
-
-  async deleteAllSelectedLegoParts () {
-    console.log('Call API to deleteAllSelectedLegoParts')
+    this.controlSelectedDeleteButtonState()
   }
 
   openAddLegoPartModal () {
@@ -227,6 +266,12 @@ class ViewController {
     const deleteLegoPartConfirmationText = document.getElementById('deleteLegoPartConfirmationText')
     const legoPartToDelete = this.utilities.getLegoPartByID(this.legoPartIdToDelete, this.legoParts)
     deleteLegoPartConfirmationText.innerText = `Are you sure to delete lego part ${legoPartToDelete.name} ?`
+    this.deleteLegoPartConfirmationModal.show()
+  }
+
+  showDeleteLegoPartsDialog () {
+    const deleteLegoPartConfirmationText = document.getElementById('deleteLegoPartConfirmationText')
+    deleteLegoPartConfirmationText.innerText = 'Are you sure to delete lego the selected parts ?'
     this.deleteLegoPartConfirmationModal.show()
   }
 
