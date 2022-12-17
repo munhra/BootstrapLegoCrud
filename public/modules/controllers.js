@@ -2,13 +2,15 @@ import { Utilities } from '../modules/utilities.js'
 import { Service } from '../modules/service.js'
 
 class ViewController {
-  // TODO create a test database.
+  // TODO hide parts table header when no records.
+  // TODO Create E2E tests
   // TODO adjust the UI when no lego parts exists on the system.
   // TODO Clean npm not used dependencies.
   // TODO lint is broken needs to fix maybe module in package.json did the error.
   // TODO check add/edit method and variable names.
   // TODO validate if the partnumber and part name already exists.
   // TODO create utilities attribute to be used in the class, is there a way to call it lazy ?
+  // TODO check why bootstrap icons are not working in deploy.
 
   service = new Service()
   utilities = new Utilities()
@@ -57,8 +59,10 @@ class ViewController {
           <td>
         </tr>`
     })
-    document.getElementById('legoPartTable').hidden = false
-    // check why bootstrap icons are not working in deploy
+
+    if (this.legoParts.length > 0) {
+      document.getElementById('legoPartTable').hidden = false
+    }
 
     const viewController = this
     this.legoParts.forEach(legoPart => {
@@ -211,6 +215,12 @@ class ViewController {
       await this.service.deleteLegoPartsFromAPI(selectedLegoPartIDs)
       this.showInfoToast('Lego parts deleted with success.')
       await this.fetchLegoParts()
+      this.controlSelectedDeleteButtonState()
+      if (this.legoParts.length === 0) {
+        document.getElementById('legoPartTable').hidden = true
+        const deleteSelectedLegoPartsButton = document.getElementById('deleteSelectedLegoParts')
+        deleteSelectedLegoPartsButton.disabled = true
+      }
       this.deleteLegoPartConfirmationModal.hide()
     } catch (e) {
       this.deleteLegoPartConfirmationModal.hide()
