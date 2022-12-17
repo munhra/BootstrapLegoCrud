@@ -2,11 +2,8 @@ import { Utilities } from '../modules/utilities.js'
 import { Service } from '../modules/service.js'
 
 class ViewController {
-  // TODO hide parts table header when no records.
   // TODO Create E2E tests
-  // TODO adjust the UI when no lego parts exists on the system.
   // TODO Clean npm not used dependencies.
-  // TODO lint is broken needs to fix maybe module in package.json did the error.
   // TODO check add/edit method and variable names.
   // TODO validate if the partnumber and part name already exists.
   // TODO create utilities attribute to be used in the class, is there a way to call it lazy ?
