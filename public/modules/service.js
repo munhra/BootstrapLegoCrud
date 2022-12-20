@@ -60,14 +60,12 @@ class Service {
 
   async deleteLegoPartsFromAPI (legoParts) {
     const legoPartsJSONString = JSON.stringify(legoParts)
-    console.log(legoPartsJSONString)
     const response = await fetch(productionURL, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       mode: 'cors',
       body: legoPartsJSONString
     })
-    console.log(response)
     if (!response.ok) {
       throw new Error('Server error when deleting lego parts.')
     }
