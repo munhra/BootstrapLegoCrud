@@ -3,7 +3,6 @@ console.log('populate db')
 
 const service = new Service()
 
-// TODO remove all records first
 const selectedLegoPartIDs = {}
 selectedLegoPartIDs.ids = []
 await service.deleteLegoPartsFromAPI(selectedLegoPartIDs)
