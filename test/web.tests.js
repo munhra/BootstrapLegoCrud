@@ -1,10 +1,13 @@
 import assert from 'assert'
 import { Builder, By } from 'selenium-webdriver'
+import { Options } from 'selenium-webdriver/firefox.js'
 
 describe('Lego CRUD test suite', async function () {
   let driver = {}
   before(async function () {
-    driver = await new Builder().forBrowser('firefox').build()
+    const options = new Options()
+    options.addArguments('--headless')
+    driver = await new Builder().forBrowser('firefox').setFirefoxOptions(options).build()
     await driver.get('https://lego-1ee0d.firebaseapp.com/')
   })
 
