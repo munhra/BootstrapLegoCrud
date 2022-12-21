@@ -5,7 +5,7 @@ describe('Lego CRUD test suite', async function () {
   let driver = {}
   before(async function () {
     driver = await new Builder().forBrowser('firefox').build()
-    await driver.get('http://localhost:8081/')
+    await driver.get('https://lego-1ee0d.firebaseapp.com/')
   })
 
   after(function () {
