@@ -32,7 +32,7 @@
   },
   "type": "module",
   "scripts": {
-    "test": "c8 --reporter=html --all mocha --require @babel/polyfill --require @babel/register --timeout 100000",
+    "test": "c8 --reporter=html --all mocha --require @babel/polyfill --require @babel/register --timeout 5000",
     "lint": "eslint ./public/modules/*.js",
     "populate": "node ./test/populate.js ",
     "all": "npm-run-all --serial lint populate test"
